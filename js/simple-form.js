@@ -50,9 +50,14 @@ export default class SimpleForm {
         method: 'POST',
         body: this.getFormValues(),
       })
-        .then(r => r.text())
-        .then(body => this.displaySuccess(body))
-        .catch(erro => this.displayError());
+        .then(r => {
+          if (!r.ok) throw Error(r.statusText);
+          return r.text()
+        })
+        .then(body => this.displaySuccess())
+        .catch(erro => {
+          this.displayError()
+        });
     }
   }
 
